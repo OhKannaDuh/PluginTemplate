@@ -1,0 +1,18 @@
+{
+    "windows": {
+        "main": {
+            "title": "PluginTemplate"
+        },
+        "config": {
+            "title": "PluginTemplate Config"
+        }
+    },
+    "generic": {
+        "label": {
+            "enabled": "Enabled",
+            "start": "Start",
+            "stop": "Stop"
+        }
+    },
+    "modules": {}
+}
