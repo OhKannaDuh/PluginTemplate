@@ -9,7 +9,8 @@
 
 - Removed Crowdsourcing module
 - Added WindowManager Module
-  - This module allow you to configure if the main and config windows open and close on plugin load, enter zone and exit zone
+    - This module allow you to configure if the main and config windows open and close on plugin load, enter zone and
+      exit zone
 
 # 0.12.1
 

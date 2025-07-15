@@ -9,5 +9,8 @@ public class Config : IOcelotConfig
 {
     public int Version { get; set; } = 1;
 
-    public void Save() => Svc.PluginInterface.SavePluginConfig(this);
+    public void Save()
+    {
+        Svc.PluginInterface.SavePluginConfig(this);
+    }
 }
