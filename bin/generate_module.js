@@ -20,4 +20,3 @@ const generator = new Generator({
 
 generator.generate("module/module", `${name}Module.cs`, { name });
 generator.generate("module/config", `${name}Config.cs`, { name });
-generator.generate("module/panel", `Panel.cs`, { name });

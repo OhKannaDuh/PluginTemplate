@@ -19,6 +19,9 @@ mv PluginTemplate.sln "$NEW_NAME.sln"
 
 # Replace all instances of "PluginTemplate" with the new project name in all files within the new project folder
 find "$NEW_NAME" -type f -exec sed -i "s/PluginTemplate/$NEW_NAME/g" {} +
+find stubs -type f -exec sed -i "s/PluginTemplate/$NEW_NAME/g" {} +
+find bin -type f -exec sed -i "s/PluginTemplate/$NEW_NAME/g" {} +
+find Translations -type f -exec sed -i "s/PluginTemplate/$NEW_NAME/g" {} +
 
 # Add the project to the solution and build
 dotnet sln "$NEW_NAME.sln" add "$NEW_NAME/$NEW_NAME.csproj"
