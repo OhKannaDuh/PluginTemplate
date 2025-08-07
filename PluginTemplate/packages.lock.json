@@ -14,32 +14,20 @@
         "resolved": "1.2.25",
         "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
       },
+      "FFXIVOcelot": {
+        "type": "Direct",
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "gYZ1ucTQWSFUywK8QZbRbLcAb+4foUrKzwGN5ywyZ8H70hDz2OIcZfIA7TLLzvud+I80/DwN8rLOiZHsySSgPA==",
+        "dependencies": {
+          "Ecommons": "3.0.0.17-api13",
+          "Pictomancy": "0.0.1"
+        }
+      },
       "ECommons": {
         "type": "Transitive",
-        "resolved": "3.0.0",
-        "contentHash": "Frb4tiuV5ESubnpq4nG6g3QnJ/Il0I3ohzLh/XHyMCN5bnf9Gedrpleo5gr3A3LWHgGLTJT5H5W/CTDPRsmdJg=="
-      },
-      "Microsoft.Extensions.Configuration": {
-        "type": "Transitive",
-        "resolved": "7.0.0",
-        "contentHash": "tldQUBWt/xeH2K7/hMPPo5g8zuLc3Ro9I5d4o/XrxvxOCA2EZBtW7bCHHTc49fcBtvB8tLAb/Qsmfrq+2SJ4vA==",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0",
-          "Microsoft.Extensions.Primitives": "7.0.0"
-        }
-      },
-      "Microsoft.Extensions.Configuration.Abstractions": {
-        "type": "Transitive",
-        "resolved": "7.0.0",
-        "contentHash": "f34u2eaqIjNO9YLHBz8rozVZ+TcFiFs0F3r7nUJd7FRkVSxk8u4OpoK226mi49MwexHOR2ibP9MFvRUaLilcQQ==",
-        "dependencies": {
-          "Microsoft.Extensions.Primitives": "7.0.0"
-        }
-      },
-      "Microsoft.Extensions.Primitives": {
-        "type": "Transitive",
-        "resolved": "7.0.0",
-        "contentHash": "um1KU5kxcRp3CNuI8o/GrZtD4AIOXDk+RLsytjZ9QPok3ttLUelLKpilVPuaFT3TFjOhSibUAso0odbOaCDj3Q=="
+        "resolved": "3.0.0.17-api13",
+        "contentHash": "r7MblEmo2zOksX2qiapL7eFhGYnXZOvu4QOb6zd8LHApjde3c+iF/JVowqUWxaAz4yS+M/bvrppsfJNIdRLm2A=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -52,6 +40,17 @@
         "contentHash": "WcSp3+vP+yHNgS8EV5J7pZ9IRpeDuARBPN28by8zqff1wJQXm26PVU8L3/fYLBJVU7BtDyqNVWq2KlCVvSSR4A==",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "Pictomancy": {
+        "type": "Transitive",
+        "resolved": "0.0.1",
+        "contentHash": "o40yKEYUsUmHLGEyfi2dzrPJBaiYGAL6Jwc32NOZUx9znXvwL0RS2A3AOGzi4wHhTEfTesLuU5yNIs60hT4ayg==",
+        "dependencies": {
+          "SharpDX.D3DCompiler": "4.2.0",
+          "SharpDX.Direct2D1": "4.2.0",
+          "SharpDX.Direct3D11": "4.2.0",
+          "SharpDX.Mathematics": "4.2.0"
         }
       },
       "SharpDX": {
@@ -100,21 +99,13 @@
           "SharpDX": "4.2.0"
         }
       },
-      "FFXIVOcelot": {
-        "type": "Project",
+      "SharpDX.Mathematics": {
+        "type": "Transitive",
+        "resolved": "4.2.0",
+        "contentHash": "R2pcKLgdsP9p5WyTjHmGOZ0ka0zASAZYc6P4L6rSvjYhf6klGYbent7MiVwbkwkt9dD44p5brjy5IwAnVONWGw==",
         "dependencies": {
-          "Ecommons": "[3.0.0, )",
-          "Microsoft.Extensions.Configuration": "[7.0.0, )",
-          "Microsoft.Extensions.Configuration.Abstractions": "[7.0.0, )",
-          "Pictomancy": "[0.0.0, )"
-        }
-      },
-      "pictomancy": {
-        "type": "Project",
-        "dependencies": {
-          "SharpDX.D3DCompiler": "[4.2.0, )",
-          "SharpDX.Direct2D1": "[4.2.0, )",
-          "SharpDX.Direct3D11": "[4.2.0, )"
+          "NETStandard.Library": "1.6.1",
+          "SharpDX": "4.2.0"
         }
       }
     }

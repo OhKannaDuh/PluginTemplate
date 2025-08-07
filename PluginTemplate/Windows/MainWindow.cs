@@ -7,6 +7,6 @@ public class MainWindow(Plugin _plugin, Config _config) : OcelotMainWindow(_plug
 {
     protected override void Render(RenderContext context)
     {
-        plugin.Modules.RenderMainUi(context);
+        _plugin.Modules.RenderMainUi(context);
     }
 }
