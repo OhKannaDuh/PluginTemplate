@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Dalamud.NET.Sdk/12.0.2">
+<Project Sdk="Dalamud.NET.Sdk/13.0.0">
     <PropertyGroup>
         <Version>0.0.0.1</Version>
         <Description>A Plugin Template</Description>
@@ -29,11 +29,5 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Release'">
         <PackageReference Include="FFXIVOcelot" Version="1.1.0"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="Dalamud.Common">
-            <HintPath>$(DalamudLibPath)Dalamud.Common.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
     </ItemGroup>
 </Project>

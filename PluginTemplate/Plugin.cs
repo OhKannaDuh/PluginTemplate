@@ -7,20 +7,17 @@ namespace PluginTemplate;
 
 public sealed class Plugin : OcelotPlugin
 {
-    public override string Name
-    {
+    public override string Name {
         get => "PluginTemplate";
     }
 
     public Config Config { get; }
 
-    public override IOcelotConfig OcelotConfig
-    {
+    public override OcelotConfig OcelotConfig {
         get => Config;
     }
 
-    public static ChainQueue Chain
-    {
+    public static ChainQueue Chain {
         get => ChainManager.Get("PluginTemplate.Chain");
     }
 
@@ -32,8 +29,6 @@ public sealed class Plugin : OcelotPlugin
         SetupLanguage(plugin);
 
         OcelotInitialize();
-
-        ChainManager.Initialize();
     }
 
     private void SetupLanguage(IDalamudPluginInterface plugin)
@@ -42,5 +37,11 @@ public sealed class Plugin : OcelotPlugin
         I18N.LoadAllFromDirectory("en", "Translations/en");
 
         I18N.SetLanguage("en");
+    }
+
+    protected override void OnCoreLoaded()
+    {
+        Commands.InitializeMainCommand("/plugintemplate");
+        Commands.InitializeConfigCommand("/plugintemplatecfg", aliases: ["/plugintemplatec"]);
     }
 }

@@ -4,9 +4,9 @@
     "net9.0-windows7.0": {
       "DalamudPackager": {
         "type": "Direct",
-        "requested": "[12.0.0, )",
-        "resolved": "12.0.0",
-        "contentHash": "J5TJLV3f16T/E2H2P17ClWjtfEBPpq3yxvqW46eN36JCm6wR+EaoaYkqG9Rm5sHqs3/nK/vKjWWyvEs/jhKoXw=="
+        "requested": "[13.0.0, )",
+        "resolved": "13.0.0",
+        "contentHash": "Mb3cUDSK/vDPQ8gQIeuCw03EMYrej1B4J44a1AvIJ9C759p9XeqdU9Hg4WgOmlnlPe0G7ILTD32PKSUpkQNa8w=="
       },
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
@@ -14,20 +14,10 @@
         "resolved": "1.2.25",
         "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
       },
-      "FFXIVOcelot": {
-        "type": "Direct",
-        "requested": "[1.1.0, )",
-        "resolved": "1.1.0",
-        "contentHash": "gYZ1ucTQWSFUywK8QZbRbLcAb+4foUrKzwGN5ywyZ8H70hDz2OIcZfIA7TLLzvud+I80/DwN8rLOiZHsySSgPA==",
-        "dependencies": {
-          "Ecommons": "3.0.0.17-api13",
-          "Pictomancy": "0.0.1"
-        }
-      },
       "ECommons": {
         "type": "Transitive",
-        "resolved": "3.0.0.17-api13",
-        "contentHash": "r7MblEmo2zOksX2qiapL7eFhGYnXZOvu4QOb6zd8LHApjde3c+iF/JVowqUWxaAz4yS+M/bvrppsfJNIdRLm2A=="
+        "resolved": "3.0.1.12",
+        "contentHash": "SjPNfV7QO75QSNsjMr0/fVcnrOD4rWb6HMPDaWCUvb4y59o9OOHHKPZwT6ah5Uul7JrUSlRhZRe40erOqI/QhA=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -106,6 +96,13 @@
         "dependencies": {
           "NETStandard.Library": "1.6.1",
           "SharpDX": "4.2.0"
+        }
+      },
+      "FFXIVOcelot": {
+        "type": "Project",
+        "dependencies": {
+          "Ecommons": "[3.0.1.12, )",
+          "Pictomancy": "[0.0.1, )"
         }
       }
     }

@@ -5,11 +5,11 @@ using Ocelot;
 namespace PluginTemplate;
 
 [Serializable]
-public class Config : IOcelotConfig
+public class Config : OcelotConfig
 {
-    public int Version { get; set; } = 1;
+    public override int Version { get; set; } = 1;
 
-    public void Save()
+    public override void Save()
     {
         Svc.PluginInterface.SavePluginConfig(this);
     }
