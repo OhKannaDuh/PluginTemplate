@@ -16,7 +16,7 @@ dotnet build -c Release
 
 # Create release on github
 gh release create "$TAG" --title "$TAG" --generate-notes
-gh release upload "$TAG" PluginTemplate/bin/Release/BOCCHI/latest.zip --clobber
+gh release upload "$TAG" PluginTemplate/bin/Release/PluginTemplate/latest.zip --clobber
 
 # Update plugin manifest
 gh repo clone plugins

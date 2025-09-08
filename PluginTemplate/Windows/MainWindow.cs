@@ -3,10 +3,10 @@
 namespace PluginTemplate.Windows;
 
 [OcelotMainWindow]
-public class MainWindow(Plugin _plugin, Config _config) : OcelotMainWindow(_plugin, _config)
+public class MainWindow(Plugin plugin, Config config) : OcelotMainWindow(plugin, config)
 {
     protected override void Render(RenderContext context)
     {
-        _plugin.Modules.RenderMainUi(context);
+        Plugin.Modules.RenderMainUi(context);
     }
 }
