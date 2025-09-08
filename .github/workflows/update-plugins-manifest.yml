@@ -1,0 +1,61 @@
+name: Update Plugins Manifest
+
+on:
+    release:
+        types: [published, prereleased]
+
+concurrency:
+    group: plugins-manifest
+    cancel-in-progress: false
+
+jobs:
+    update-manifest:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        env:
+            PLUGINS_REPO: OhKannaDuh/plugins
+        steps:
+            - name: Derive release info
+              run: |
+                  echo "TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+                  echo "IS_PRERELEASE=${{ github.event.release.prerelease }}" >> $GITHUB_ENV
+
+            - name: Checkout current repo (for context only)
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "lts/*"
+
+            - name: Clone plugins repo
+              run: |
+                  git clone "https://x-access-token:${{ secrets.PLUGINS_REPO_PAT }}@github.com/${PLUGINS_REPO}.git" plugins
+
+            - name: Install and generate manifest
+              working-directory: plugins/manifest-generator
+              run: |
+                  npm ci
+                  # If your generator needs the tag or prerelease flag, expose them as env vars
+                  TAG="$TAG" IS_PRERELEASE="$IS_PRERELEASE" npx tsx src/index.ts | tee ../../manifest_output.txt
+
+            - name: Commit manifest changes (if any)
+              working-directory: plugins
+              run: |
+                  git config user.name "github-actions"
+                  git config user.email "github-actions@github.com"
+                  git add manifest.json
+
+                  if ! git diff --cached --quiet; then
+                    COMMIT_MSG=$(awk '/^Suggested commit message:/{getline; print; exit}' ../manifest_output.txt)
+                    if [ -z "$COMMIT_MSG" ]; then
+                      COMMIT_MSG="Update Manifest for ${TAG}"
+                    fi
+                    git commit -m "$COMMIT_MSG"
+                    git push origin HEAD:master
+                  else
+                    echo "No manifest changes to commit."
+                  fi
