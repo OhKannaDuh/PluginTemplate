@@ -6,24 +6,31 @@
         <PackageProjectUrl>https://github.com/OhKannaDuh/PluginTemplate</PackageProjectUrl>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
         <IsPackable>false</IsPackable>
-        <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
         <NoWarn>$(NoWarn);4014</NoWarn>
         <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=$(MSBuildProjectName)/</PathMap>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.xlcore/dalamud/Hooks/dev/</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)/Library/Application Support/XIV on Mac/dalamud/Hooks/dev/</DalamudLibPath>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <DefineConstants>DEBUG;TRACE;DEBUG_BUILD</DefineConstants>
+        <DefineConstants>DEBUG;TRACE;</DefineConstants>
       </PropertyGroup>
-    <!-- Files -->
+    <!-- Translations -->
     <ItemGroup>
-        <Content Include="..\assets\icon.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Visible>false</Visible>
-        </Content>
+        <None Include="..\Ocelot\Translations\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>Translations\%(RecursiveDir)ocelot.%(Filename)%(Extension)</Link>
+        </None>
         <None Include="..\Translations\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Link>Translations\%(RecursiveDir)%(Filename)%(Extension)</Link>
         </None>
     </ItemGroup>
+    <!-- Ocelot -->
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <ProjectReference Include="../Ocelot/Ocelot/Ocelot.csproj"/>
     </ItemGroup>
