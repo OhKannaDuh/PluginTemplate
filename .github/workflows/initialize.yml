@@ -21,14 +21,15 @@ jobs:
                   fi
 
             - name: Set naming variables
-              run: |
-                  REPO_NAME="${GITHUB_REPOSITORY##*/}"
-                  INTERNAL_NAME="${REPO_NAME// /}"  # Remove spaces
-                  DISPLAY_NAME="${REPO_NAME//_/ }"  # Replace underscores with spaces
-                  SNAKE_NAME=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/ /_/g')
-                  echo "INTERNAL_NAME=$INTERNAL_NAME" >> $GITHUB_ENV
-                  echo "DISPLAY_NAME=$DISPLAY_NAME" >> $GITHUB_ENV
-                  echo "SNAKE_NAME=$SNAKE_NAME" >> $GITHUB_ENV
+                run: |
+                    REPO_NAME="${GITHUB_REPOSITORY##*/}"
+                    INTERNAL_NAME="$REPO_NAME"
+                    DISPLAY_NAME=$(echo "$REPO_NAME" | sed 's/\([a-z]\)\([A-Z]\)/\1 \2/g')
+                    SNAKE_NAME=$(echo "$DISPLAY_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/ /_/g')
+                    echo "INTERNAL_NAME=$INTERNAL_NAME" >> $GITHUB_ENV
+                    echo "DISPLAY_NAME=$DISPLAY_NAME" >> $GITHUB_ENV
+                    echo "SNAKE_NAME=$SNAKE_NAME" >> $GITHUB_ENV
+
 
             - name: Replace placeholders in files
               run: |
@@ -59,9 +60,12 @@ jobs:
               run: echo "Initialization complete" > .initialized
 
             - name: Commit changes
-              run: |
-                  git config user.name "github-actions"
-                  git config user.email "github-actions@github.com"
-                  git add .
-                  git commit -m "Initialize project from template"
-                  git push
+                env:
+                    TOKEN: ${{ secrets.PLUGIN_TEMPLATE_SET_NAME }}
+                run: |
+                    git config user.name "github-actions"
+                    git config user.email "github-actions@github.com"
+                    git add .
+                    git commit -m "Initialize project from template" || echo "No changes to commit"
+                    git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:master
+
