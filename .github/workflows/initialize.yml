@@ -18,14 +18,8 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Check if already initialized
-              run: |
-                  if [ -f ".initialized" ]; then
-                    echo "Project already initialized. Skipping."
-                    exit 0
-                  fi
-
             - name: Set naming variables
+              if: hashFiles('.initialized') == ''
               run: |
                   REPO_NAME="${GITHUB_REPOSITORY##*/}"
                   INTERNAL_NAME="$REPO_NAME"
@@ -36,6 +30,7 @@ jobs:
                   echo "SNAKE_NAME=$SNAKE_NAME" >> $GITHUB_ENV
 
             - name: Replace placeholders in files
+              if: hashFiles('.initialized') == ''
               run: |
                   # Replace PluginTemplate with INTERNAL_NAME
                   sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" bin/generate_module.js bin/release.sh .gitignore stubs/module/module.stub stubs/module/config.stub PluginTemplate/PluginTemplate.csproj
@@ -51,21 +46,22 @@ jobs:
                   sed -i "s/plugintemplate/${SNAKE_NAME}/g" PluginTemplate/Plugin.cs
 
             - name: Rename files and folders
+              if: hashFiles('.initialized') == ''
               run: |
                   mv PluginTemplate/PluginTemplate.json PluginTemplate/${INTERNAL_NAME}.json
                   mv PluginTemplate/PluginTemplate.csproj PluginTemplate/${INTERNAL_NAME}.csproj
                   mv PluginTemplate ${INTERNAL_NAME}
 
             - name: Create solution and add project
+              if: hashFiles('.initialized') == ''
               run: |
                   dotnet new sln -n "${INTERNAL_NAME}"
                   dotnet sln "${INTERNAL_NAME}.sln" add "${INTERNAL_NAME}/${INTERNAL_NAME}.csproj"
 
-            - name: Mark as initialized
-              run: echo "Initialization complete" > .initialized
-
-            - name: Commit changes
+            - name: Mark as initialized and commit changes
+              if: hashFiles('.initialized') == ''
               run: |
+                  echo "Initialization complete" > .initialized
                   git config user.name "github-actions"
                   git config user.email "github-actions@github.com"
                   git add .
