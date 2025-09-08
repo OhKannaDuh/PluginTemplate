@@ -11,7 +11,9 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
             - name: Check if already initialized
               run: |
@@ -35,6 +37,7 @@ jobs:
                   # Replace PluginTemplate with INTERNAL_NAME
                   sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" bin/generate_module.js bin/release.sh .gitignore stubs/module/module.stub stubs/module/config.stub PluginTemplate/PluginTemplate.csproj
                   sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" PluginTemplate/**/*.cs
+                  sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" PluginTemplate/*.cs
 
                   # Replace PluginTemplate with DISPLAY_NAME
                   sed -i "s/PluginTemplate/${DISPLAY_NAME}/g" Translations/en/windows.config.json Translations/en/windows.main.json README.md
@@ -59,11 +62,9 @@ jobs:
               run: echo "Initialization complete" > .initialized
 
             - name: Commit changes
-              env:
-                  TOKEN: ${{ secrets.PLUGIN_TEMPLATE_SET_NAME }}
               run: |
                   git config user.name "github-actions"
                   git config user.email "github-actions@github.com"
                   git add .
                   git commit -m "Initialize project from template" || echo "No changes to commit"
-                  git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:master
+                  git push origin HEAD:master
