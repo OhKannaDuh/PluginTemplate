@@ -12,49 +12,63 @@ if [ "${2:-}" == "--testing" ]; then
     IS_TESTING=true
 fi
 
-# Find first csproj in the solution file in the repo root
 SLN_FILE=$(find . -maxdepth 1 -name "*.sln" | head -n 1)
 if [ -z "$SLN_FILE" ]; then
     echo "Error: no solution (.sln) file found in repo root."
     exit 1
 fi
 
-PROJECT=$(grep -oE '[^"]+\.csproj' "$SLN_FILE" | head -n 1 | sed 's|.csproj||')
+echo "Using solution file: $SLN_FILE"
+
+PROJECT=$(basename "$SLN_FILE" .sln)
 if [ -z "$PROJECT" ]; then
     echo "Error: could not determine project name from $SLN_FILE"
     exit 1
 fi
 
+echo "Using project: $PROJECT"
+
 ZIP_PATH="$PROJECT/bin/x64/Release/$PROJECT/latest.zip"
+
+echo "Using zip path: $ZIP_PATH"
+
+echo "Release tag: $TAG"
+echo "Is testing release: $IS_TESTING"
 
 # --- Pre-checks -------------------------------------------------------------
 
-# Ensure no uncommitted changes
+echo "Checking for uncommitted changes..."
 if ! git diff --quiet || ! git diff --cached --quiet; then
     echo "Error: You have uncommitted changes. Commit or stash them before releasing."
     exit 1
 fi
 
-# Ensure tag doesn't already exist locally or remotely
+echo "Checking if tag '$TAG' exists..."
 if git rev-parse "$TAG" >/dev/null 2>&1; then
     echo "Error: Tag '$TAG' already exists locally."
     exit 1
 fi
 
+echo "Checking if tag '$TAG' exists on remote..."
 if git ls-remote --tags origin | grep -q "refs/tags/$TAG"; then
     echo "Error: Tag '$TAG' already exists on remote."
     exit 1
 fi
 
-# Ensure version in csproj matches
+echo "Checking csproj version..."
 CS_VERSION=$(xmllint --xpath "string(//Project/PropertyGroup/Version)" "$PROJECT/$PROJECT.csproj")
 if [ "$CS_VERSION" != "$TAG" ]; then
-    echo "Error: csproj version ($CS_VERSION) does not match tag ($TAG)."
-    echo "Fix the version in $PROJECT/$PROJECT.csproj first."
-    exit 1
+    echo "csproj version ($CS_VERSION) does not match tag ($TAG). Updating..."
+    xmllint --shell "$PROJECT/$PROJECT.csproj" <<EOF > /dev/null
+cd //Project/PropertyGroup/Version
+set $TAG
+save
+EOF
+    git add "$PROJECT/$PROJECT.csproj"
+    git commit -m "Version: $TAG"
 fi
 
-# Ensure CHANGELOG.md mentions the version
+echo "Checking CHANGELOG.md for entry..."
 if ! grep -q "# $TAG" CHANGELOG.md; then
     echo "Error: CHANGELOG.md does not contain entry for $TAG."
     exit 1
@@ -68,6 +82,7 @@ rm -f "$ZIP_PATH"
 echo "Building project..."
 dotnet build -c Release
 
+echo "Verifying build output..."
 if [ ! -f "$ZIP_PATH" ]; then
     echo "Error: Build failed or $ZIP_PATH not created."
     exit 1
@@ -75,6 +90,7 @@ fi
 
 # --- Tag + Release ----------------------------------------------------------
 
+echo "Creating git tag and pushing to remote..."
 git tag "$TAG"
 git push origin master "$TAG"
 
