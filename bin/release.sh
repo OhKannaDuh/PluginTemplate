@@ -56,7 +56,7 @@ if [ -z "$PROJECT" ]; then
   exit 1
 fi
 
-ZIP_PATH="$PROJECT/bin/x64/Release/$PROJECT/latest.zip"
+ZIP_PATH="$PROJECT/bin/Release/$PROJECT/latest.zip"
 CSPROJ="$PROJECT/$PROJECT.csproj"
 
 if git rev-parse "$TAG" >/dev/null 2>&1; then

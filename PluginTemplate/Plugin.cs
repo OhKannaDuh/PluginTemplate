@@ -1,47 +1,33 @@
 ﻿using Dalamud.Plugin;
-using ECommons;
+using Microsoft.Extensions.DependencyInjection;
 using Ocelot;
-using Ocelot.Chain;
+using Ocelot.Chain.Services;
+using Ocelot.ECommons.Services;
+using Ocelot.Mechanic.Services;
+using Ocelot.Pathfinding.Services;
+using Ocelot.Pictomancy.Services;
+using Ocelot.Rotation.Services;
+using Ocelot.UI.Services;
 
 namespace PluginTemplate;
 
-public sealed class Plugin : OcelotPlugin
+public sealed class Plugin(IDalamudPluginInterface plugin) : OcelotPlugin(plugin)
 {
-    public override string Name {
-        get => "PluginTemplate";
-    }
+    private readonly IDalamudPluginInterface plugin = plugin;
 
-    public Config Config { get; }
-
-    public override OcelotConfig OcelotConfig {
-        get => Config;
-    }
-
-    public static ChainQueue Chain {
-        get => ChainManager.Get("PluginTemplate.Chain");
-    }
-
-    public Plugin(IDalamudPluginInterface plugin)
-        : base(plugin, Module.DalamudReflector)
+    protected override void Boostrap(IServiceCollection services)
     {
-        Config = plugin.GetPluginConfig() as Config ?? new Config();
-
-        SetupLanguage(plugin);
-
-        OcelotInitialize();
+        BootstrapOcelotModules(services);
     }
 
-    private void SetupLanguage(IDalamudPluginInterface plugin)
+    private static void BootstrapOcelotModules(IServiceCollection services)
     {
-        I18N.SetDirectory(plugin.AssemblyLocation.Directory?.FullName!);
-        I18N.LoadAllFromDirectory("en", "Translations/en");
-
-        I18N.SetLanguage("en");
-    }
-
-    protected override void OnCoreLoaded()
-    {
-        Commands.InitializeMainCommand("/plugintemplate");
-        Commands.InitializeConfigCommand("/plugintemplatecfg", aliases: ["/plugintemplatec"]);
+        // services.LoadECommons();
+        // services.LoadPictomancy();
+        // services.LoadPathfinding();
+        // services.LoadMechanics();
+        // services.LoadRotations();
+        // services.LoadChain();
+        // services.LoadUI();
     }
 }
