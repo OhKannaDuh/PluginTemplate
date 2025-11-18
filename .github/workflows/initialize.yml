@@ -33,8 +33,7 @@ jobs:
               if: hashFiles('.initialized') == ''
               run: |
                   # Replace PluginTemplate with INTERNAL_NAME
-                  sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" bin/generate_module.js bin/release.sh .gitignore stubs/module/module.stub stubs/module/config.stub PluginTemplate/PluginTemplate.csproj
-                  sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" PluginTemplate/**/*.cs
+                  sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" bin/release.sh .gitignore PluginTemplate/PluginTemplate.csproj
                   sed -i "s/PluginTemplate/${INTERNAL_NAME}/g" PluginTemplate/*.cs
 
                   # Replace PluginTemplate with DISPLAY_NAME
