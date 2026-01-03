@@ -15,6 +15,8 @@ public sealed class Plugin(IDalamudPluginInterface plugin) : OcelotPlugin(plugin
 {
     private readonly IDalamudPluginInterface plugin = plugin;
 
+    public override string Name { get; } = "PluginTemplate";
+
     protected override void Boostrap(IServiceCollection services)
     {
         BootstrapOcelotModules(services);
